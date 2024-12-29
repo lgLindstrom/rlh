@@ -1,9 +1,7 @@
- 
 import 'package:flutter/material.dart';
-import 'package:rlh_flutter/core/app/auth_gate.dart';
+import 'package:rlh_flutter/core/app/authentication_gate.dart';
 import 'package:rlh_flutter/core/config/theme/dark_theme.dart';
 import 'package:rlh_flutter/core/config/theme/light_theme.dart';
-
 
 class ApplicationWidget extends StatelessWidget {
   const ApplicationWidget({super.key});
@@ -12,7 +10,7 @@ class ApplicationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     //return const ProviderScope(child: ProviderWidget());
 
-    return   MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
       darkTheme: darkTheme,
@@ -52,6 +50,6 @@ class ResponsivenessWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AuthGate();
+    return   AuthenticationGate();
   }
 }

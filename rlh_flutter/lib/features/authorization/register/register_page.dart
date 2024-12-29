@@ -14,10 +14,10 @@ class RegisterPage extends StatelessWidget {
       GetIt.instance.get<RegisterPageController>();
 
   String? same(String? s1, String? s2) {
-    String _s1 = s1 ?? '';
-    String _s2 = s2 ?? '';
+    String s10 = s1 ?? '';
+    String s20 = s2 ?? '';
 
-    if (_s1 != _s2) {
+    if (s10 != s20) {
       return 'passwd_no_equal';
     }
     return null;

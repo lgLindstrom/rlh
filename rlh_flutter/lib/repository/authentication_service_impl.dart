@@ -4,11 +4,10 @@ import 'package:rlh_client/rlh_client.dart';
 import 'package:rlh_flutter/business/error_codes.dart';
 import 'package:rlh_flutter/business/services/baas_access.dart';
 import 'package:rlh_flutter/business/services/authentication_service.dart';
-import 'package:rlh_flutter/src/serverpod_client.dart';
+
 import 'package:serverpod_auth_client/serverpod_auth_client.dart';
 import 'package:serverpod_auth_email_flutter/serverpod_auth_email_flutter.dart';
 import 'package:serverpod_auth_shared_flutter/serverpod_auth_shared_flutter.dart';
- 
 
 class AuthenticationServiceImpl implements AuthenticationService {
   AuthenticationServiceImpl() {}
@@ -36,23 +35,24 @@ class AuthenticationServiceImpl implements AuthenticationService {
   @override
   Future<BaasAccess> signInWithEmailPassword(
       String email, String password) async {
-
     var client = GetIt.instance.get<Client>();
+    SessionManager session = GetIt.instance.get<SessionManager>();
+
     var auth = EmailAuthController(client.modules.auth);
 
     try {
-      
-      var result = await auth.signIn(email,password);
+      UserInfo? result = await auth.signIn(email, password);
 
-      if (result != null) return BaasAccessSuccess<UserInfo>(result);
+      if (result != null) {
+        session.registerSignedInUser(
+            result, auth.authenticationKeyId, auth.authenticationKey);
+        return BaasAccessSuccess<UserInfo>(result);
+      }
 
       return BaasAccessFailure<String>("Unable to log in");
     } catch (e) {
- 
       return const BaasAccessFailure<String>('Unknown Failusre');
- 
     }
-    
   }
 
   @override
@@ -61,16 +61,16 @@ class AuthenticationServiceImpl implements AuthenticationService {
   }
 
   @override
-   BaasAccess getCurrentUser()  {
+  BaasAccess getCurrentUser() {
     var session = GetIt.instance.get<SessionManager>();
 
-    UserInfo? user =  session.signedInUser;
+    UserInfo? user = session.signedInUser;
 
     if (user != null) {
-      return   BaasAccessSuccess<UserInfo>(user);
+      return BaasAccessSuccess<UserInfo>(user);
     }
 
-    return  const BaasAccessFailure<String>('');
+    return const BaasAccessFailure<String>('');
   }
 
   /*  @override
@@ -92,8 +92,6 @@ class AuthenticationServiceImpl implements AuthenticationService {
   Future<BaasAccess> verifyEmail(String email, String verificationCode) async {
     var client = GetIt.instance.get<Client>();
     var auth = EmailAuthController(client.modules.auth);
-
-    
 
     var result = await auth.validateAccount(email, verificationCode);
 
