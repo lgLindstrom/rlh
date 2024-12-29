@@ -1,0 +1,19 @@
+{
+  "moduleName": "rlh",
+  "tables": [],
+  "installedModules": [
+    {
+      "module": "rlh",
+      "version": "20241227080856334"
+    },
+    {
+      "module": "serverpod",
+      "version": "20240516151843329"
+    },
+    {
+      "module": "serverpod_auth",
+      "version": "20240520102713718"
+    }
+  ],
+  "migrationApiVersion": 1
+}

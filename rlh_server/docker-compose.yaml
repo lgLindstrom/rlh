@@ -1,0 +1,56 @@
+version: '3.7'
+
+services:
+  # Development services
+  postgres:
+    image: postgres:16.3
+    ports:
+      - '8090:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: rlh
+      POSTGRES_PASSWORD: "N1jEkcaOB4e_83uERtTVfRLq0PZk2nQ-"
+    volumes:
+      - rlh_data:/var/lib/postgresql/data
+    profiles:
+      - '' # Default profile
+      - dev
+  redis:
+    image: redis:6.2.6
+    ports:
+      - '8091:6379'
+    command: redis-server --requirepass "Sr-sYR9Qqu1MKAz32FsGeBC01TFMMjix"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    profiles:
+      - '' # Default profile
+      - dev
+
+  # Test services
+  postgres_test:
+    image: postgres:16.3
+    ports:
+      - '9090:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: rlh_test
+      POSTGRES_PASSWORD: "8XCIztJHyfYurcwV3TygP5BJetv3Up-K"
+    volumes:
+      - rlh_test_data:/var/lib/postgresql/data
+    profiles:
+      - '' # Default profile
+      - test
+  redis_test:
+    image: redis:6.2.6
+    ports:
+      - '9091:6379'
+    command: redis-server --requirepass "RKu7xLwfNBCEw3Cs3W_-ZClG-fm5Y5or"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    profiles:
+      - '' # Default profile
+      - test
+
+volumes:
+  rlh_data:
+  rlh_test_data:

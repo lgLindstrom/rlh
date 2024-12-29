@@ -1,0 +1,5 @@
+enum UserEmailState {
+  notVerified,
+  verified,
+
+}
